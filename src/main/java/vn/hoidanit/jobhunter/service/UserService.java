@@ -41,8 +41,11 @@ public class UserService {
             //save in database
             currentUser = this.userRepository.save(currentUser);
         }
-
         return currentUser;
+    }
+
+    public User handleGetUserByUserName(String username){
+        return this.userRepository.findByEmail(username);
     }
     
 }
