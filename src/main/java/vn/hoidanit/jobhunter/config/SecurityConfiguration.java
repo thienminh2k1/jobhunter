@@ -44,21 +44,21 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http,
+			CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
 		http
 				.csrf(c -> c.disable())
 				.cors(Customizer.withDefaults())
 				.authorizeHttpRequests(
 						authz -> authz
-								.requestMatchers("/", "login").permitAll()
+								.requestMatchers("/", "/api/v1/login").permitAll()
 								.anyRequest().authenticated())
 				.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
-				.authenticationEntryPoint(customAuthenticationEntryPoint)
-				)
+						.authenticationEntryPoint(customAuthenticationEntryPoint))
 				// .exceptionHandling(
-				// 		exceptions -> exceptions
-				// 				.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) // 401
-				// 				.accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
+				// exceptions -> exceptions
+				// .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) // 401
+				// .accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
 
 				.formLogin(f -> f.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -66,15 +66,15 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthorityPrefix("");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("hoidanit");
+	public JwtAuthenticationConverter jwtAuthenticationConverter() {
+		JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+		grantedAuthoritiesConverter.setAuthorityPrefix("");
+		grantedAuthoritiesConverter.setAuthoritiesClaimName("hoidanit");
 
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-        return jwtAuthenticationConverter;
-    }
+		JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+		return jwtAuthenticationConverter;
+	}
 
 	@Bean
 	public JwtEncoder jwtEncoder() {
