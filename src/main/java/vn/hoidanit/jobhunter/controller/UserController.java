@@ -75,8 +75,7 @@ public class UserController {
             throw new IdInvalidException("User với id = " + id + " không tồn tại");
         }
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(this.userService.convertToResUserDTO(fetchUser));
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.convertToResUserDTO(fetchUser));
     }
 
     // fetch all users
