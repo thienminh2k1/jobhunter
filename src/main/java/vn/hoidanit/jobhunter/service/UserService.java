@@ -34,7 +34,6 @@ public class UserService {
             Optional<Company> companyOptional = this.companyService.findById(user.getCompany().getId());
             user.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
         }
-
         return this.userRepository.save(user);
     }
 
